@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratório Interativo de Front-End | Semanas 24 & 25</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="functions.js" defer></script>
+</head>
+<body>
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">FE</div>
+        <div>
+          <h1>Laboratório Interativo — Front-End</h1>
+          <p class="subtitle">Semanas 24 &amp; 25 • Demonstração Prática ao Vivo</p>
+        </div>
+      </div>
+
+      <button id="btn-rubrica" class="btn btn-outline-cyan" type="button">
+        📋 Roteiro da Apresentação
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs-bar" aria-label="Conceitos de Front-End">
+    <div class="container tabs-list">
+      <button class="tab-btn active" data-tab="props" type="button">
+        <span class="tab-week">Sem 24</span>
+        1. Componentização &amp; Props
+      </button>
+      <button class="tab-btn" data-tab="spa" type="button">
+        <span class="tab-week">Sem 24</span>
+        2. Rotas SPA (Sem Reload)
+      </button>
+      <button class="tab-btn" data-tab="state" type="button">
+        <span class="tab-week">Sem 25</span>
+        3. Estado Reativo (useState)
+      </button>
+      <button class="tab-btn" data-tab="api" type="button">
+        <span class="tab-week">Sem 25</span>
+        4. Consumo de API (Fetch/Async)
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container main-content">
+
+    <!-- ================= TAB 1: COMPONENTIZAÇÃO & PROPS ================= -->
+    <section id="tab-props" class="tab-panel active">
+      <div class="panel-header">
+        <div>
+          <span class="badge badge-cyan">Semana 24 • Arquitetura de UI</span>
+          <h2>Componentização &amp; Passagem de Props</h2>
+          <p class="panel-desc">
+            Componentes são blocos reutilizáveis de interface. As <strong>Props</strong> (propriedades) funcionam como parâmetros de função que configuram cada instância visualmente sem duplicar código.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Controles Interativos -->
+        <div class="card">
+          <div class="card-title">🎛️ Painel de Controle (Pai → Filho)</div>
+          <div class="form-group">
+            <label for="prop-nome">Prop <code>nome</code></label>
+            <input type="text" id="prop-nome" value="Ana Silva" placeholder="Digite o nome..." />
+          </div>
+
+          <div class="form-group">
+            <label for="prop-cargo">Prop <code>cargo</code></label>
+            <input type="text" id="prop-cargo" value="Desenvolvedora Front-End" placeholder="Digite o cargo..." />
+          </div>
+
+          <div class="form-group">
+            <label>Prop <code>corTema</code></label>
+            <div class="color-picker-group">
+              <button type="button" class="color-btn active" data-color="cyan">Ciano</button>
+              <button type="button" class="color-btn" data-color="emerald">Esmeralda</button>
+              <button type="button" class="color-btn" data-color="purple">Roxo</button>
+              <button type="button" class="color-btn" data-color="amber">Âmbar</button>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button type="button" id="btn-add-card" class="btn btn-primary">
+              + Instanciar Novo Card (.map)
+            </button>
+            <button type="button" id="btn-reset-cards" class="btn btn-secondary">
+              Limpar Extras
+            </button>
+          </div>
+
+          <div class="code-box">
+            <div class="code-header">JSX / Chamada do Componente em Tempo Real</div>
+            <pre><code id="code-props-preview"></code></pre>
+          </div>
+        </div>
+
+        <!-- Resultado Visual -->
+        <div class="card">
+          <div class="card-title">🖥️ Renderização dos Componentes</div>
+          <div id="cards-container" class="cards-stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: ROTAS SPA ================= -->
+    <section id="tab-spa" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <span class="badge badge-cyan">Semana 24 • Navegação Moderna</span>
+          <h2>Single Page Application (SPA) &amp; Roteamento</h2>
+          <p class="panel-desc">
+            Em uma SPA, o navegador carrega a página <strong>apenas uma vez</strong>. Ao clicar nos links, o JavaScript intercepta a URL e troca somente o miolo do DOM, sem recarregar a tela inteira.
+          </p>
+        </div>
+        <div class="reload-counter">
+          <span>Reloads da Página:</span>
+          <strong id="reload-count">0</strong>
+        </div>
+      </div>
+
+      <div class="browser-mockup">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">
+            https://meuapp.edu.br<span id="spa-url-path" class="url-highlight">/home</span>
+          </div>
+          <span class="spa-status">● DOM Atualizado Dinamicamente</span>
+        </div>
+
+        <div class="spa-app">
+          <div class="spa-navbar">
+            <span class="spa-logo">⚡ PortalAluno</span>
+            <div class="spa-links">
+              <button type="button" class="spa-link active" data-route="/home">/home</button>
+              <button type="button" class="spa-link" data-route="/sobre">/sobre</button>
+              <button type="button" class="spa-link" data-route="/contato">/contato</button>
+            </div>
+          </div>
+
+          <div id="spa-viewport" class="spa-viewport"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: ESTADO REATIVO ================= -->
+    <section id="tab-state" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <span class="badge badge-cyan">Semana 25 • Reatividade</span>
+          <h2>Estado Reativo (<code>useState</code>) &amp; Ciclo de Renderização</h2>
+          <p class="panel-desc">
+            Diferente de variáveis comuns, alterar um <strong>Estado</strong> dispara automaticamente a atualização visual apenas dos elementos ligados àquele dado.
+          </p>
+        </div>
+      </div>
+
+      <!-- Fluxo visual dos 3 passos -->
+      <div class="flow-steps">
+        <div id="step-1" class="flow-step">
+          <div class="step-num">1</div>
+          <div>
+            <strong>Evento do Usuário</strong>
+            <p>Clique ou interação (<code>onClick</code>)</p>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div id="step-2" class="flow-step">
+          <div class="step-num">2</div>
+          <div>
+            <strong>Atualização do Estado</strong>
+            <p><code>setCount()</code> altera o valor na memória</p>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div id="step-3" class="flow-step">
+          <div class="step-num">3</div>
+          <div>
+            <strong>Re-renderização</strong>
+            <p>Interface reflete o novo estado</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⚡ Interaja com os Estados</div>
+
+          <div class="state-widget">
+            <div>
+              <span class="widget-label">Estado 1: <code>contador</code></span>
+              <div id="state-count-display" class="big-number">0</div>
+            </div>
+            <div class="button-row">
+              <button type="button" id="btn-dec" class="btn btn-secondary">-1</button>
+              <button type="button" id="btn-reset-count" class="btn btn-secondary">Zerar</button>
+              <button type="button" id="btn-inc" class="btn btn-primary">+1</button>
+            </div>
+          </div>
+
+          <div class="state-widget">
+            <div>
+              <span class="widget-label">Estado 2: <code>curtido</code> (Booleano)</span>
+              <div id="state-like-text" class="like-status">Não curtido</div>
+            </div>
+            <button type="button" id="btn-like" class="btn-heart" aria-label="Curtir">
+              🤍 Curtir
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔍 Código &amp; Memória do Componente</div>
+          <div class="code-box full-height">
+            <div class="code-header">Estado Atual em Memória</div>
+            <pre><code id="code-state-preview"></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: CONSUMO DE API ================= -->
+    <section id="tab-api" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <span class="badge badge-cyan">Semana 25 • Assincronismo</span>
+          <h2>Consumo de API REST (<code>fetch</code> + <code>async/await</code>)</h2>
+          <p class="panel-desc">
+            Requisições externas levam tempo. Por isso tratamos 3 estados obrigatórios na interface: <strong>Loading</strong> (carregando), <strong>Success</strong> (dados JSON renderizados) e <strong>Error</strong> (tratamento de falha).
+          </p>
+        </div>
+      </div>
+
+      <div class="api-controls">
+        <button type="button" id="btn-fetch-ok" class="btn btn-primary">
+          🚀 Buscar Dados da API (200 OK)
+        </button>
+        <button type="button" id="btn-fetch-err" class="btn btn-danger">
+          ⚠️ Simular Erro de Servidor (500)
+        </button>
+        <button type="button" id="btn-fetch-clear" class="btn btn-secondary">
+          Limpar Tela
+        </button>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📦 Resposta Bruta da API (JSON)</div>
+          <div class="code-box full-height">
+            <div class="code-header" id="api-status-header">Status: Aguardando requisição...</div>
+            <pre><code id="api-json-output">// Clique em um dos botões acima para disparar o fetch()</code></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎨 Interface Renderizada para o Usuário</div>
+          <div id="api-ui-output" class="api-ui-box">
+            <p class="muted-center">Nenhuma requisição executada ainda.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Roteiro da Apresentação (Rubrica 100 pts) -->
+  <div id="modal-rubrica" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">📋 Guia Rápido da Apresentação — Front-End</h3>
+        <button type="button" id="btn-close-modal" class="btn-close" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="rubrica-item">
+          <span class="rubrica-tag">1. Identificação (25 pts)</span>
+          <p><strong>Semanas 24 e 25:</strong> Arquitetura de Componentes, Props, Rotas SPA, Estado Reativo (<code>useState</code>) e Consumo Assíncrono de APIs.</p>
+        </div>
+        <div class="rubrica-item">
+          <span class="rubrica-tag">2. Resumo dos Conceitos (20 + 20 pts)</span>
+          <p>Dividir a tela em componentes independentes reduz repetição; estados reativos atualizam o DOM automaticamente; APIs conectam o front ao back-end via JSON.</p>
+        </div>
+        <div class="rubrica-item">
+          <span class="rubrica-tag">3. Atividades Realizadas (15 pts)</span>
+          <p>Criação de cards parametrizados com Props, navegação sem reload e listagem dinâmica consumindo endpoints REST.</p>
+        </div>
+        <div class="rubrica-item">
+          <span class="rubrica-tag">4. Exemplificação Prática (10 pts)</span>
+          <p>Use as 4 abas deste laboratório ao vivo para demonstrar cada comportamento em tempo real.</p>
+        </div>
+        <div class="rubrica-item">
+          <span class="rubrica-tag">5. Aprendizado Principal (10 pts)</span>
+          <p>A importância de separar responsabilidades (estrutura, estilo e lógica) e prever estados de carregamento e erro para uma boa experiência do usuário (UX).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
